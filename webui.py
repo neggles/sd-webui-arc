@@ -59,7 +59,10 @@ def check_versions():
     if shared.cmd_opts.skip_version_check:
         return
 
-    expected_torch_version = "1.13.1"
+    if devices.device.type == 'xpu':
+        expected_torch_version = '1.13.0'
+    else:
+        expected_torch_version = "1.13.1"
 
     if version.parse(torch.__version__) < version.parse(expected_torch_version):
         errors.print_error_explanation(f"""
