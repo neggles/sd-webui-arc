@@ -63,7 +63,10 @@ def gc():
     accelerator.gc()
 
 def enable_tf32():
-    return accelerator.enable_tf32()
+    if hasattr(accelerator, "enable_tf32"):
+        return accelerator.enable_tf32()
+    else:
+        return
 
 
 def extract_device_id(args, name):
@@ -75,10 +78,10 @@ def extract_device_id(args, name):
 
 
 def get_optimal_device_name():
-    accelerator_device = accelerator.get_device()
-    if accelerator_device is not None:
-        return accelerator_device
-
+    if accelerator is not None:
+        accelerator_device = accelerator.get_device()
+        if accelerator_device is not None:
+            return accelerator_device
     return "cpu"
 
 
@@ -94,7 +97,7 @@ def get_device_for(task):
 
     return get_optimal_device()
 
-errors.run(accelerator.enable_tf32, "Enabling TF32")
+errors.run(enable_tf32, "Enabling TF32")
 
 cpu = torch.device("cpu")
 device = device_interrogate = device_gfpgan = device_esrgan = device_codeformer = None
