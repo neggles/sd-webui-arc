@@ -8,7 +8,7 @@ class OneApiAccelerator(BaseAccelerator):
     _instance = None
 
     def __init__(self):
-        self.device = torch.device(MPSAccelerator.device_string)
+        self.device = torch.device(OneApiAccelerator.device_string)
         return
 
     @classmethod
@@ -52,9 +52,9 @@ class OneApiAccelerator(BaseAccelerator):
     def autocast(self, dtype=None):
         return torch.xpu.amp.autocast(enabled=True, dtype=dtype, cache_enabled=False)
 
-    def optimize(self, model, dtype):
+    def optimize(self, model, dtype: torch.dtype, *args, **kwargs):
         #model.training = False
-        #return ipex.optimize(model, dtype)
+        return ipex.optimize(model, dtype, *args, **kwargs)
         return model
 
     def reset_peak_memory_stats(self):
@@ -62,6 +62,7 @@ class OneApiAccelerator(BaseAccelerator):
 
     def enable_tf32(self):
         try:
+            print("setting tf32 mode")
             ipex.set_fp32_math_mode(device="xpu", mode=ipex.FP32MathMode.TF32)
             #ipex.set_fp32_math_mode(device="xpu", mode=ipex.FP32MathMode.BF32)
         except Exception:
