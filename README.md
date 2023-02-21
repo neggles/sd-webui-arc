@@ -13,6 +13,8 @@
 + Once configured, you should stop webui.sh and copy & paste this repository to /home/your username/stable-diffusion-webui, overwriting its contents.  
 + 再次启动 Run again [webui.sh](webui.sh). Enjoy it! 尽情享用吧！
 
+## Issues
+When a black screen or other phenomenon occurs, please add: --skip-torch-cuda-test --no-half-vae --disable-nan-check in [webui-user.sh](webui-user.sh)
 ## Original Readme。
 A browser interface based on Gradio library for Stable Diffusion.
 
