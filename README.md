@@ -1,6 +1,6 @@
 # Stable Diffusion web UI for Intel Arc with Intel Extension for Pytorch
 
-This version is rather buggy, if you are a Windows user you can try the [DirectML version](https://github.com/Aloereed/stable-diffusion-webui-arc-directml). 这一版本比较buggy，如果你是Windows用户可以尝试[DirectML版本](https://github.com/Aloereed/stable-diffusion-webui-arc-directml)。  
+Forked from [neggles/sd-webui-arc](https://github.com/neggles/sd-webui-arc). This version is rather buggy, if you are a Windows user you can try the [DirectML version](https://github.com/Aloereed/stable-diffusion-webui-arc-directml). 这一版本比较buggy，如果你是Windows用户可以尝试[DirectML版本](https://github.com/Aloereed/stable-diffusion-webui-arc-directml)。  
 
 ## Requirements/需求
 + 你应当跟随[Intel 安装向导](https://intel.github.io/intel-extension-for-pytorch/xpu/latest/tutorials/installation.html) 完成IPEX的安装。或者查阅[ArcNotes.txt](ArcNotes.txt)。
