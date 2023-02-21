@@ -1,11 +1,5 @@
 #!/bin/bash
-###
- # @Author: HU Zheng
- # @Date: 2023-02-18 13:27:41
- # @LastEditors: HU Zheng
- # @LastEditTime: 2023-02-21 12:57:20
- # @Description: file content
-### 
+
 #########################################################
 # Uncomment and change the variables below to your need:#
 #########################################################
