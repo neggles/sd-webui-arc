@@ -8,6 +8,11 @@
 + Intel Arc A770/A750
 
 ## 安装英特尔软件包的简单指南
+### 0. 升级WSLg
+如果你使用的是WSL2，那么你首先需要在powershell中运行 
+```powershell
+wsl --update
+```
 ### 1. 安装英特尔® oneAPI基础工具包
 您只需要安装英特尔® oneAPI DPC++编译器（DPCPP_ROOT为其安装路径）。
 以及英特尔® oneAPI数学内核库（oneMKL）（MKL_ROOT为其安装路径）。
