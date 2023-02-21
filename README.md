@@ -14,7 +14,7 @@
 + 再次启动 Run again [webui.sh](webui.sh). Enjoy it! 尽情享用吧！
 
 ## Issues
-+ When a black screen or other phenomenon occurs, please add: --skip-torch-cuda-test --no-half-vae --disable-nan-check in [webui-user.sh](webui-user.sh)  
++ When a black screen or other phenomenon occurs, please add: --skip-torch-cuda-test --disable-nan-check in [webui-user.sh](webui-user.sh)  
 + Positive prompt please greater than 100 words.
 + 当出现黑屏或其他现象时，请在[webui-user.sh]中加入： --skip-torch-cuda-test --no-half-vae --disable-nan-check(webui-user.sh)  
 + 正面提示请大于100字。  
