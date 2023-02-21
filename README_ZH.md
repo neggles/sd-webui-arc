@@ -7,6 +7,48 @@
 + 你应该按照[Intel 安装指南](https://intel.github.io/intel-extension-for-pytorch/xpu/latest/tutorials/installation.html)来完成IPEX的安装。或者查阅[ArcNotes.txt](ArcNotes.txt)。
 + Intel Arc A770/A750
 
+## 安装英特尔软件包的简单指南
+### 1. 安装英特尔® oneAPI基础工具包
+您只需要安装英特尔® oneAPI DPC++编译器（DPCPP_ROOT为其安装路径）。
+以及英特尔® oneAPI数学内核库（oneMKL）（MKL_ROOT为其安装路径）。
+```bash
+wget https://registrationcenter-download.intel.com/akdlm/irc_nas/19079/l_BaseKit_p_2023.0.0.25537.sh
+sudo sh ./l_BaseKit_p_2023.0.0.25537.sh
+```
+ 默认的安装位置{ONEAPI_ROOT}对于root账户是/opt/intel/oneapi，其他账户是${HOME}/intel/oneapi。一般来说，DPCPP_ROOT是{ONEAPI_ROOT}/compiler/latest，MKL_ROOT是{ONEAPI_ROOT}/mkl/latest。
+``bash
+source /opt/intel/oneapi/setvars.sh
+```
+### 2. 安装运行时软件包
+```bash
+sudo apt install intel-opencl-icd intel-level-zero-gpu level-zero intel-media-va-driver-non-free libmfx1
+```
+或者你可以这样做。
+``bash
+mkdir neo
+cd neo
+wget https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.12504.5/intel-igc-core_1.0.12504.5_amd64.deb
+wget https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.12504.5/intel-igc-opencl_1.0.12504.5_amd64.deb
+wget https://github.com/intel/compute-runtime/releases/download/22.43.24595.30/intel-level-zero-gpu-dbgsym_1.3.24595.30_amd64.ddeb
+wget https://github.com/intel/compute-runtime/releases/download/22.43.24595.30/intel-level-zero-gpu_1.3.24595.30_amd64.deb
+wget https://github.com/intel/compute-runtime/releases/download/22.43.24595.30/intel-opencl-icd-dbgsym_22.43.24595.30_amd64.ddeb
+wget https://github.com/intel/compute-runtime/releases/download/22.43.24595.30/intel-opencl-icd_22.43.24595.30_amd64.deb
+wget https://github.com/intel/compute-runtime/releases/download/22.43.24595.30/libigdgmm12_22.3.0_amd64.deb
+sudo dpkg -i *.deb
+cd .
+```
+
+### 3. 用`sycl-ls`验证GPU的可见性
+```
+sycl-ls
+
+[opencl:acc:0] Intel(R) FPGA Emulation Platform for OpenCL(TM), Intel(R) FPGA Emulation Device 1.2 [2022.15.12.0.01_081451]。
+[opencl:cpu:1] Intel(R) OpenCL, Intel(R) Core(TM) i5-9600KF CPU @ 3.70GHz 3.0 [2022.15.12.0.01_081451] 。
+[opencl:gpu:2] Intel(R) OpenCL HD Graphics, Intel(R) Graphics [0x56a0] 3.0 [22.43.24595.30] 。
+[ext_oneapi_level_zero:gpu:0] Intel(R) Level-Zero, Intel(R) Graphics [0x56a0] 1.3 [1.3.24595] <----- 检查这个是否存在。
+*** 使用www.DeepL.com/Translator翻译（免费版） ***
+
+
 ## 设置
 + 只要运行[webui.sh](webui.sh)
 + 请验证您在运行上一步时是否安装了Pytorch的Intel版本（而不是+cu117）。
