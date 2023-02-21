@@ -8,6 +8,11 @@ This version is a little buggy, if you are a Windows user you can try the Direct
 + Intel Arc A770/A750
 
 ## A simple guide to install Intel Packages
+### 0. Upgrade WSLg
+If you are using WSL2, then you first need to run in powershell 
+```powershell
+wsl --update
+```
 ### 1. Install  Intel® oneAPI Base Toolkit
 You only need to install Intel® oneAPI DPC++ Compiler (DPCPP_ROOT as its installation path)
 And Intel® oneAPI Math Kernel Library (oneMKL) (MKL_ROOT as its installation path)
@@ -39,7 +44,7 @@ cd ..
 ```
 
 ### 3. verify GPU visibility with `sycl-ls`
-```
+```bash
 sycl-ls
 
 [opencl:acc:0] Intel(R) FPGA Emulation Platform for OpenCL(TM), Intel(R) FPGA Emulation Device 1.2 [2022.15.12.0.01_081451]
