@@ -1,4 +1,19 @@
-# Stable Diffusion web UI
+# Stable Diffusion web UI for Intel Arc with Intel Extension for Pytorch
+
+## Requirements/需求
++ 你应当跟随[Intel 安装向导](https://intel.github.io/intel-extension-for-pytorch/xpu/latest/tutorials/installation.html) 完成IPEX的安装。或者查阅[ArcNotes.txt](ArcNotes.txt)。
++ You should follow the [Intel Installation Wizard](https://intel.github.io/intel-extension-for-pytorch/xpu/latest/tutorials/installation.html) to complete the installation of IPEX. Or consult [ArcNotes.txt](ArcNotes.txt).
++ Linux 64 bit/ WSL2
++ Intel Arc A770/A750
+## Setup/安装
++ Just run [webui.sh](webui.sh)
++ 请核实运行上一步时安装的是Intel版本的Pytorch，而不是cuda版本。Please verify that the Intel version of Pytorch was installed when you ran the previous step, and not the cuda version.
++ Put your models in 放入模型到 /home/你的用户名your username/stable-diffusion-webui/models/Stable-diffusion
++ 配置完成后，你应该将本仓库复制粘贴到/home/你的用户名/stable-diffusion-webui，覆盖其中的内容。
++ Once configured, you should copy and paste this repository to /home/your username/stable-diffusion-webui, overwriting its contents.  
++ Enjoy it! 尽情享用吧！
+
+## Original Readme。
 A browser interface based on Gradio library for Stable Diffusion.
 
 ![](screenshot.png)
