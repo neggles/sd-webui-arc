@@ -6,7 +6,6 @@ import sys
 import time
 
 from PIL import Image
-import gradio as gr
 import tqdm
 
 import modules.interrogate
@@ -16,6 +15,7 @@ import modules.devices as devices
 from modules import localization, extensions, script_loading, errors, ui_components, shared_items
 from modules.paths import models_path, script_path, data_path
 
+import gradio as gr
 
 demo = None
 
