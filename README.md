@@ -1,5 +1,7 @@
 # Stable Diffusion web UI for Intel Arc with Intel Extension for Pytorch
 
+This version is rather buggy, if you are a Windows user you can try the [DirectML version](https://github.com/Aloereed/stable-diffusion-webui-arc-directml). 这一版本比较buggy，如果你是Windows用户可以尝试[DirectML版本](https://github.com/Aloereed/stable-diffusion-webui-arc-directml)。  
+
 ## Requirements/需求
 + 你应当跟随[Intel 安装向导](https://intel.github.io/intel-extension-for-pytorch/xpu/latest/tutorials/installation.html) 完成IPEX的安装。或者查阅[ArcNotes.txt](ArcNotes.txt)。
 + You should follow the [Intel Installation Wizard](https://intel.github.io/intel-extension-for-pytorch/xpu/latest/tutorials/installation.html) to complete the installation of IPEX. Or consult [ArcNotes.txt](ArcNotes.txt).
@@ -13,11 +15,18 @@
 + **Once configured, you should stop webui.sh and copy & paste this repository to /home/your username/stable-diffusion-webui, overwriting its contents.**  
 + 再次启动 Run again [webui.sh](webui.sh). Enjoy it! 尽情享用吧！
 
+## Test/测试
+25 seconds on Intel Arc A770 with anything-v4.0 for 150 steps.
+
 ## Issues
 + When a black screen or other phenomenon occurs, please add: --skip-torch-cuda-test --disable-nan-check in [webui-user.sh](webui-user.sh)  
-+ Positive prompt please greater than 100 words.
++ Or just try more.
++ Positive prompt please greater than 75 words.
++ The number of inference steps should be greater than 50 steps or even more.
 + 当出现黑屏或其他现象时，请在[webui-user.sh](webui-user.sh)中加入： --skip-torch-cuda-test  --disable-nan-check  
-+ 正面提示请大于100字。  
++ 或者就是多试试
++ 正面提示请尽可能大于75词。  
++ 推理步数请大于50步。
 
 ## Original Readme
 A browser interface based on Gradio library for Stable Diffusion.
