@@ -1,4 +1,11 @@
 #!/bin/bash
+###
+ # @Author: HU Zheng
+ # @Date: 2023-02-18 13:27:41
+ # @LastEditors: HU Zheng
+ # @LastEditTime: 2023-02-21 12:57:20
+ # @Description: file content
+### 
 #########################################################
 # Uncomment and change the variables below to your need:#
 #########################################################
@@ -10,7 +17,7 @@
 #clone_dir="stable-diffusion-webui"
 
 # Commandline arguments for webui.py, for example: export COMMANDLINE_ARGS="--medvram --opt-split-attention"
-#export COMMANDLINE_ARGS=""
+export COMMANDLINE_ARGS="--skip-torch-cuda-test"
 
 # python3 executable
 #python_cmd="python3"
@@ -25,7 +32,7 @@
 #export LAUNCH_SCRIPT="launch.py"
 
 # install command for torch
-#export TORCH_COMMAND="pip install torch==1.12.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113"
+export TORCH_COMMAND="pip install pillow mkl torch==1.13.0a0 torchvision==0.14.1a0 intel_extension_for_pytorch==1.13.10+xpu -f https://developer.intel.com/ipex-whl-stable-xpu"
 
 # Requirements file to use for stable-diffusion-webui
 #export REQS_FILE="requirements_versions.txt"
