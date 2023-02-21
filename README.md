@@ -10,8 +10,8 @@ This version is a little buggy, if you are a Windows user you can try the Direct
 ## Setup
 + Just run [webui.sh](webui.sh)
 + Please verify that the Intel version (rather than +cu117) of Pytorch was installed when you ran the previous step.
-+ Put your models in /home/<your username>/stable-diffusion-webui/models/Stable-diffusion
-+ **Once configured, you should stop webui.sh and copy & paste this repository to /home/<your username>/stable-diffusion-webui, overwriting its contents.** (Or you can modify the installation location in [webui.sh](webui.sh). Also, you can just put this repository in that location before everything starts.）  
++ Put your models in /home/\<your username\>/stable-diffusion-webui/models/Stable-diffusion
++ **Once configured, you should stop webui.sh and copy & paste this repository to /home/\<your username\>/stable-diffusion-webui, overwriting its contents.** (Or you can modify the installation location in [webui.sh](webui.sh). Also, you can just put this repository in that location before everything starts.）  
 + Run again [webui.sh](webui.sh) and enjoy it!
 
 ## Test
