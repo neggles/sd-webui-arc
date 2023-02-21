@@ -7,6 +7,46 @@ This version is a little buggy, if you are a Windows user you can try the Direct
 + You should follow the [Intel Installation Guide](https://intel.github.io/intel-extension-for-pytorch/xpu/latest/tutorials/installation.html) to complete the installation of IPEX. Or consult [ArcNotes.txt](ArcNotes.txt).
 + Intel Arc A770/A750
 
+## A simple guide to install Intel Packages
+### 1. Install  Intel® oneAPI Base Toolkit
+# You only need to install Intel® oneAPI DPC++ Compiler (DPCPP_ROOT as its installation path)
+# And Intel® oneAPI Math Kernel Library (oneMKL) (MKL_ROOT as its installation path)
+```bash
+wget https://registrationcenter-download.intel.com/akdlm/irc_nas/19079/l_BaseKit_p_2023.0.0.25537.sh
+sudo sh ./l_BaseKit_p_2023.0.0.25537.sh
+```
+ Default installation location {ONEAPI_ROOT} is /opt/intel/oneapi for root account, ${HOME}/intel/oneapi for other accounts. Generally, DPCPP_ROOT is {ONEAPI_ROOT}/compiler/latest, MKL_ROOT is {ONEAPI_ROOT}/mkl/latest.
+```bash
+source /opt/intel/oneapi/setvars.sh
+```
+### 2. Install run-time packages
+```bash
+sudo apt install intel-opencl-icd intel-level-zero-gpu level-zero intel-media-va-driver-non-free libmfx1
+```
+Or you can do this:
+```bash
+mkdir neo
+cd neo
+wget https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.12504.5/intel-igc-core_1.0.12504.5_amd64.deb
+wget https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.12504.5/intel-igc-opencl_1.0.12504.5_amd64.deb
+wget https://github.com/intel/compute-runtime/releases/download/22.43.24595.30/intel-level-zero-gpu-dbgsym_1.3.24595.30_amd64.ddeb
+wget https://github.com/intel/compute-runtime/releases/download/22.43.24595.30/intel-level-zero-gpu_1.3.24595.30_amd64.deb
+wget https://github.com/intel/compute-runtime/releases/download/22.43.24595.30/intel-opencl-icd-dbgsym_22.43.24595.30_amd64.ddeb
+wget https://github.com/intel/compute-runtime/releases/download/22.43.24595.30/intel-opencl-icd_22.43.24595.30_amd64.deb
+wget https://github.com/intel/compute-runtime/releases/download/22.43.24595.30/libigdgmm12_22.3.0_amd64.deb
+sudo dpkg -i *.deb
+cd ..
+```
+
+### 3. verify GPU visibility with `sycl-ls`
+```
+sycl-ls
+
+[opencl:acc:0] Intel(R) FPGA Emulation Platform for OpenCL(TM), Intel(R) FPGA Emulation Device 1.2 [2022.15.12.0.01_081451]
+[opencl:cpu:1] Intel(R) OpenCL, Intel(R) Core(TM) i5-9600KF CPU @ 3.70GHz 3.0 [2022.15.12.0.01_081451]
+[opencl:gpu:2] Intel(R) OpenCL HD Graphics, Intel(R) Graphics [0x56a0] 3.0 [22.43.24595.30]
+[ext_oneapi_level_zero:gpu:0] Intel(R) Level-Zero, Intel(R) Graphics [0x56a0] 1.3 [1.3.24595]     <----- Check if this exists.
+```
 ## Setup
 + Just run [webui.sh](webui.sh)
 + Please verify that the Intel version (rather than +cu117) of Pytorch was installed when you ran the previous step.
