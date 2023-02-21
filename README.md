@@ -9,8 +9,8 @@ This version is a little buggy, if you are a Windows user you can try the Direct
 
 ## A simple guide to install Intel Packages
 ### 1. Install  Intel® oneAPI Base Toolkit
-# You only need to install Intel® oneAPI DPC++ Compiler (DPCPP_ROOT as its installation path)
-# And Intel® oneAPI Math Kernel Library (oneMKL) (MKL_ROOT as its installation path)
+You only need to install Intel® oneAPI DPC++ Compiler (DPCPP_ROOT as its installation path)
+And Intel® oneAPI Math Kernel Library (oneMKL) (MKL_ROOT as its installation path)
 ```bash
 wget https://registrationcenter-download.intel.com/akdlm/irc_nas/19079/l_BaseKit_p_2023.0.0.25537.sh
 sudo sh ./l_BaseKit_p_2023.0.0.25537.sh
