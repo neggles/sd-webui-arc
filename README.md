@@ -9,8 +9,8 @@
 + Just run 启动 [webui.sh](webui.sh)
 + 请核实运行上一步时安装的是Intel版本的Pytorch，而不是cuda版本。Please verify that the Intel version of Pytorch was installed when you ran the previous step, and not the cuda version.
 + Put your models in 放入模型到 /home/你的用户名your username/stable-diffusion-webui/models/Stable-diffusion
-+ 配置完成后，你应该终止webui.sh将本仓库复制粘贴到/home/你的用户名/stable-diffusion-webui，覆盖其中的内容。
-+ Once configured, you should stop webui.sh and copy & paste this repository to /home/your username/stable-diffusion-webui, overwriting its contents.  
++ **配置完成后，你应该终止webui.sh将本仓库复制粘贴到/home/你的用户名/stable-diffusion-webui，覆盖其中的内容。**
++ **Once configured, you should stop webui.sh and copy & paste this repository to /home/your username/stable-diffusion-webui, overwriting its contents.**  
 + 再次启动 Run again [webui.sh](webui.sh). Enjoy it! 尽情享用吧！
 
 ## Issues
