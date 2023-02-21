@@ -24,7 +24,7 @@ source /opt/intel/oneapi/setvars.sh
 sudo apt install intel-opencl-icd intel-level-zero-gpu level-zero intel-media-va-driver-non-free libmfx1
 ```
 或者你可以这样做。
-``bash
+```bash
 mkdir neo
 cd neo
 wget https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.12504.5/intel-igc-core_1.0.12504.5_amd64.deb
@@ -39,14 +39,14 @@ cd ..
 ```
 
 ### 3. 用`sycl-ls`验证GPU的可见性
-```
+```bash
 sycl-ls
 
 [opencl:acc:0] Intel(R) FPGA Emulation Platform for OpenCL(TM), Intel(R) FPGA Emulation Device 1.2 [2022.15.12.0.01_081451]。
 [opencl:cpu:1] Intel(R) OpenCL, Intel(R) Core(TM) i5-9600KF CPU @ 3.70GHz 3.0 [2022.15.12.0.01_081451] 。
 [opencl:gpu:2] Intel(R) OpenCL HD Graphics, Intel(R) Graphics [0x56a0] 3.0 [22.43.24595.30] 。
 [ext_oneapi_level_zero:gpu:0] Intel(R) Level-Zero, Intel(R) Graphics [0x56a0] 1.3 [1.3.24595] <----- 检查这个是否存在。
-*** 使用www.DeepL.com/Translator翻译（免费版） ***
+```
 
 
 ## 设置
