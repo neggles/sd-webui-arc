@@ -35,7 +35,7 @@ wget https://github.com/intel/compute-runtime/releases/download/22.43.24595.30/i
 wget https://github.com/intel/compute-runtime/releases/download/22.43.24595.30/intel-opencl-icd_22.43.24595.30_amd64.deb
 wget https://github.com/intel/compute-runtime/releases/download/22.43.24595.30/libigdgmm12_22.3.0_amd64.deb
 sudo dpkg -i *.deb
-cd .
+cd ..
 ```
 
 ### 3. 用`sycl-ls`验证GPU的可见性
