@@ -1,34 +1,29 @@
-# Stable Diffusion web UI for Intel Arc with Intel Extension for Pytorch
+# 用于Intel Arc的Stable Diffusion网页用户界面，带有Pytorch的Intel扩展。
 
-Forked from [neggles/sd-webui-arc](https://github.com/neggles/sd-webui-arc). This version is rather buggy, if you are a Windows user you can try the [DirectML version](https://github.com/Aloereed/stable-diffusion-webui-arc-directml). 这一版本比较buggy，如果你是Windows用户可以尝试[DirectML版本](https://github.com/Aloereed/stable-diffusion-webui-arc-directml)。  
+这个版本有点小毛病，如果你是Windows用户，可以试试DirectML版本[在这里](https://github.com/Aloereed/stable-diffusion-webui-arc-directml)或[这里](https://github.com/lshqqytiger/stable-diffusion-webui-directml)。 [英文自述文件戳这里](README.md)  
 
-## Requirements/需求
-+ 你应当跟随[Intel 安装向导](https://intel.github.io/intel-extension-for-pytorch/xpu/latest/tutorials/installation.html) 完成IPEX的安装。或者查阅[ArcNotes.txt](ArcNotes.txt)。
-+ You should follow the [Intel Installation Wizard](https://intel.github.io/intel-extension-for-pytorch/xpu/latest/tutorials/installation.html) to complete the installation of IPEX. Or consult [ArcNotes.txt](ArcNotes.txt).
-+ Linux 64 bit/ WSL2
+## 要求
++ Linux 64 bit / WSL2
++ 你应该按照[Intel 安装指南](https://intel.github.io/intel-extension-for-pytorch/xpu/latest/tutorials/installation.html)来完成IPEX的安装。或者查阅[ArcNotes.txt](ArcNotes.txt)。
 + Intel Arc A770/A750
-## Setup/安装
-+ Just run 启动 [webui.sh](webui.sh)
-+ 请核实运行上一步时安装的是Intel版本的Pytorch，而不是cuda版本。Please verify that the Intel version of Pytorch was installed when you ran the previous step, and not the cuda version.
-+ Put your models in 放入模型到 /home/你的用户名your username/stable-diffusion-webui/models/Stable-diffusion
-+ **配置完成后，你应该终止webui.sh将本仓库复制粘贴到/home/你的用户名/stable-diffusion-webui，覆盖其中的内容。**
-+ **Once configured, you should stop webui.sh and copy & paste this repository to /home/your username/stable-diffusion-webui, overwriting its contents.**  
-+ 再次启动 Run again [webui.sh](webui.sh). Enjoy it! 尽情享用吧！
 
-## Test/测试
-25 seconds on Intel Arc A770 with anything-v4.0 for 150 steps.
+## 设置
++ 只要运行[webui.sh](webui.sh)
++ 请验证您在运行上一步时是否安装了Pytorch的Intel版本（而不是+cu117）。
++ 把你的模型放在/home/<你的用户名>/stable-diffusion-webui/models/Stable-diffusion中。
++ **一旦配置好，你应该停止webui.sh并复制&粘贴这个资源库到/home/<你的用户名>/stable-diffusion-webui，覆盖其内容。**（或者你可以修改[webui.sh](webui.sh)中的安装位置。另外，你也可以在一切开始之前，直接把这个软件库放到那个位置。）  
++ 再次运行 [webui.sh](webui.sh) 并享受它!
 
-## Issues
-+ When a black screen or other phenomenon occurs, please add: --skip-torch-cuda-test --disable-nan-check in [webui-user.sh](webui-user.sh)  
-+ Or just try more.
-+ Positive prompt please greater than 75 words.
-+ The number of inference steps should be greater than 50 steps or even more.
-+ 当出现黑屏或其他现象时，请在[webui-user.sh](webui-user.sh)中加入： --skip-torch-cuda-test  --disable-nan-check  
-+ 或者就是多试试
-+ 正面提示请尽可能大于75词。  
-+ 推理步数请大于50步。
+## 测试
+在Intel Arc A770 16GB上测试25秒，使用anything-v4.0的150步。
 
-## Original Readme
+## 已知问题
++ 当出现黑屏或其他现象时，请在[webui-user.sh](webui-user.sh)中加入： --skip-torch-cuda-test --disable-nan-check  
++ 或者就多试试。
++ 正面提示请大于75字。
++ 推理步骤的数量要大于50步，甚至更多。
+
+## 原有版本的Readme
 A browser interface based on Gradio library for Stable Diffusion.
 
 ![](screenshot.png)
