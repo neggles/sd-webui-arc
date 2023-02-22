@@ -6,6 +6,7 @@ This version is a little buggy, if you are a Windows user you can try the Direct
 + Linux 64 bit / WSL2
 + You should follow the [Intel Installation Guide](https://intel.github.io/intel-extension-for-pytorch/xpu/latest/tutorials/installation.html) to complete the installation of IPEX. Or consult [ArcNotes.txt](ArcNotes.txt).
 + Intel Arc A770/A750
++ Python 3.10
 
 ## A simple guide to install Intel Packages
 ### 0. Upgrade WSLg
