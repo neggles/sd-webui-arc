@@ -6,6 +6,7 @@
 + Linux 64 bit / WSL2
 + 你应该按照[Intel 安装指南](https://intel.github.io/intel-extension-for-pytorch/xpu/latest/tutorials/installation.html)来完成IPEX的安装。或者查阅[ArcNotes.txt](ArcNotes.txt)。
 + Intel Arc A770/A750
++ Python 3.10
 
 ## 安装英特尔软件包的简单指南
 ### 0. 升级WSLg
