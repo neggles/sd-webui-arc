@@ -21,7 +21,8 @@ wsl --update
 wget https://registrationcenter-download.intel.com/akdlm/irc_nas/19079/l_BaseKit_p_2023.0.0.25537.sh
 sudo sh ./l_BaseKit_p_2023.0.0.25537.sh
 ```
- 默认的安装位置{ONEAPI_ROOT}对于root账户是/opt/intel/oneapi，其他账户是${HOME}/intel/oneapi。一般来说，DPCPP_ROOT是{ONEAPI_ROOT}/compiler/latest，MKL_ROOT是{ONEAPI_ROOT}/mkl/latest。
+ 默认的安装位置{ONEAPI_ROOT}对于root账户是/opt/intel/oneapi，其他账户是${HOME}/intel/oneapi。一般来说，DPCPP_ROOT是{ONEAPI_ROOT}/compiler/latest，MKL_ROOT是{ONEAPI_ROOT}/mkl/latest。  
+ 每次启动前都需要：
 ```bash
 source /opt/intel/oneapi/setvars.sh
 ```
