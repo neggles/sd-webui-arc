@@ -27,9 +27,7 @@ source /opt/intel/oneapi/setvars.sh
 ```
 ### 2. Install run-time packages
 (Some users have reported that these packages are too old in the apt repository, so please use the manual installation.)  
-<br>```bash
-sudo apt install intel-opencl-icd intel-level-zero-gpu level-zero intel-media-va-driver-non-free libmfx1
-```</br>
+~~sudo apt install intel-opencl-icd intel-level-zero-gpu level-zero intel-media-va-driver-non-free libmfx1~~  
 Or you can do this:
 ```bash
 mkdir neo
