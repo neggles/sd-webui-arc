@@ -27,7 +27,7 @@ source /opt/intel/oneapi/setvars.sh
 ```
 ### 2. 安装运行时软件包
 (一些用户报告说，这些软件包在apt仓库中太旧了，所以请使用手动安装。)  
-~~sudo apt install intel-opencl-icd intel-level-zero-gpu level-zero intel-media-va-driver-non-free libmfx1~~
+~~sudo apt install intel-opencl-icd intel-level-zero-gpu level-zero intel-media-va-driver-non-free libmfx1~~  
 或者你可以这样做。
 ```bash
 mkdir neo
