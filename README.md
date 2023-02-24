@@ -22,6 +22,7 @@ wget https://registrationcenter-download.intel.com/akdlm/irc_nas/19079/l_BaseKit
 sudo sh ./l_BaseKit_p_2023.0.0.25537.sh
 ```
  Default installation location {ONEAPI_ROOT} is /opt/intel/oneapi for root account, ${HOME}/intel/oneapi for other accounts. Generally, DPCPP_ROOT is {ONEAPI_ROOT}/compiler/latest, MKL_ROOT is {ONEAPI_ROOT}/mkl/latest.
+ (Required below before each start-up.)  
 ```bash
 source /opt/intel/oneapi/setvars.sh
 ```
