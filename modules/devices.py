@@ -17,34 +17,49 @@ supported_accelerators = [OneApiAccelerator, MPSAccelerator, CudaAccelerator]
 for impl in supported_accelerators:
     accelerator = impl.discover()
     if accelerator is not None:
+        print(f"Using {accelerator} accelerator.")
         break
+
 
 def accelerated():
     return accelerator is not None
 
+
 def amp():
     return accelerator.amp()
+
 
 def optimize(model, dtype):
     return accelerator.optimize(model, dtype)
 
+
 def memory_stats(device=None):
     return accelerator.memory_stats(device)
+
 
 def memory_summary():
     return accelerator.memory_summary()
 
+
 def reset_peak_memory_stats():
     return accelerator.reset_peak_memory_stats()
+
 
 def get_free_memory():
     return accelerator.get_free_memory()
 
+
+def get_available_vram():
+    return accelerator.get_available_vram()
+
+
 def get_total_memory():
     return accelerator.get_total_memory()
 
+
 def empty_cache():
     return accelerator.empty_cache()
+
 
 def manual_seed(seed):
     if accelerated():
@@ -52,15 +67,16 @@ def manual_seed(seed):
     else:
         torch.manual_seed(seed)
 
+
 def einsum_op(q, k, v):
-
-
     # Smaller slices are faster due to L2/L3/SLC caches.
     # Tested on i7 with 8MB L3 cache.
-    return einsum_op_tensor_mem(q, k, v, 32)
+    return accelerator.einsum_op_tensor_mem(q, k, v, 32)
+
 
 def gc():
     accelerator.gc()
+
 
 def enable_tf32():
     if hasattr(accelerator, "enable_tf32"):
@@ -97,6 +113,7 @@ def get_device_for(task):
 
     return get_optimal_device()
 
+
 errors.run(enable_tf32, "Enabling TF32")
 
 cpu = torch.device("cpu")
@@ -119,6 +136,7 @@ def randn(seed, shape):
     manual_seed(seed)
     return accelerator.randn(shape)
 
+
 def randn_without_seed(shape):
     return accelerator.randn(shape)
 
@@ -132,11 +150,15 @@ def autocast(disable=False):
     if dtype == torch.float32 or shared.cmd_opts.precision == "full":
         return contextlib.nullcontext()
 
-    return accelerator.autocast(dtype)
+    return accelerator.autocast()
 
 
 def without_autocast(disable=False):
-    return accelerator.autocast(disable=False) if torch.is_autocast_enabled() and not disable else contextlib.nullcontext()
+    return (
+        accelerator.autocast(enabled=False)
+        if torch.is_autocast_enabled() and not disable
+        else contextlib.nullcontext()
+    )
 
 
 class NansException(Exception):
@@ -156,7 +178,7 @@ def test_for_nans(x, where):
         message = "A tensor with all NaNs was produced in Unet."
 
         if not shared.cmd_opts.no_half:
-            message += " This could be either because there's not enough precision to represent the picture, or because your video card does not support half type. Try setting the \"Upcast cross attention layer to float32\" option in Settings > Stable Diffusion or using the --no-half commandline argument to fix this."
+            message += ' This could be either because there\'s not enough precision to represent the picture, or because your video card does not support half type. Try setting the "Upcast cross attention layer to float32" option in Settings > Stable Diffusion or using the --no-half commandline argument to fix this.'
 
     elif where == "vae":
         message = "A tensor with all NaNs was produced in VAE."

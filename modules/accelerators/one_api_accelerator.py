@@ -1,14 +1,20 @@
+import contextlib
 import numpy
 import torch
 import intel_extension_for_pytorch as ipex
+
+from packaging import version
 from modules.accelerators.base_accelerator import BaseAccelerator
+from modules.sd_hijack_utils import CondFunc
+
 
 class OneApiAccelerator(BaseAccelerator):
-
     _instance = None
 
     def __init__(self):
-        self.device = torch.device(OneApiAccelerator.device_string)
+        self.device = torch.device(self.device_string)
+        self.props = ipex.xpu.get_device_properties(device=self.device)
+        # ipex.xpu.set_verbose_level(ipex.xpu.VerbLevel.ON)
         return
 
     @classmethod
@@ -18,9 +24,9 @@ class OneApiAccelerator(BaseAccelerator):
 
     @classmethod
     def _has_xpu(cls):
-        if not getattr(torch, 'xpu', False):
+        if getattr(torch, "xpu", None) is None:
             return False
-        return torch.xpu.is_available()
+        return ipex.xpu.is_available()
 
     @classmethod
     def discover(cls):
@@ -28,68 +34,81 @@ class OneApiAccelerator(BaseAccelerator):
             if cls._instance is None:
                 cls._instance = cls()
             return cls._instance
-
         return None
 
+    ## BaseAccelerator methods
     def get_device(self):
-        return self.device_string
-
-    def gc(self):
-        torch.xpu.empty_cache()
-
-    def empty_cache(self):
-        torch.xpu.empty_cache()
-
-    def memory_summary(self):
-        return torch.xpu.memory_summary()
+        return ipex.xpu.get_device_type()
 
     def get_available_vram(self):
-        return self.get_total_memory() - torch.xpu.memory_allocated()
-
-    def get_free_memory(self):
-        return self.get_available_vram()
-
-    def autocast(self, dtype=None):
-        return torch.xpu.amp.autocast(enabled=True, dtype=dtype, cache_enabled=False)
-
-    def optimize(self, model, dtype: torch.dtype):
-        #model.training = False
-        return ipex.optimize(model, dtype)
-        #return model
-
-    def reset_peak_memory_stats(self):
-        return torch.xpu.reset_peak_memory_stats()
-
-    def enable_tf32(self):
-        try:
-            print("setting tf32 mode")
-            ipex.set_fp32_math_mode(device="xpu", mode=ipex.FP32MathMode.TF32)
-            #ipex.set_fp32_math_mode(device="xpu", mode=ipex.FP32MathMode.BF32)
-        except Exception:
-            pass
-        else:
-            pass
-
-    def get_total_memory(self):
-        return ipex.xpu.get_device_properties(0).total_memory
+        return self.get_free_memory()
 
     def memory_stats(self, device=None):
-        return torch.xpu.memory_stats(device=self.device if device is None else device)
+        return ipex.xpu.memory_stats(device=device if device is not None else self.device)
+
+    def memory_summary(self):
+        return ipex.xpu.memory_summary(self.device)
+
+    def get_free_memory(self):
+        stats = ipex.xpu.memory_stats(self.device)
+        mem_active = stats["active_bytes.all.current"]
+        mem_reserved = stats["reserved_bytes.all.current"]
+        return self.get_total_memory() - mem_active - mem_reserved
+
+    def get_total_memory(self):
+        return self.props.total_memory
+
+    def reset_peak_memory_stats(self):
+        return ipex.xpu.reset_peak_memory_stats(self.device)
+
+    def empty_cache(self):
+        ipex.xpu.empty_cache()
+
+    def gc(self):
+        self.empty_cache()
+
+    def enable_tf32(self):
+        if self.props.dev_type == "gpu":
+            ipex.xpu.set_fp32_math_mode(mode=ipex.FP32MathMode.TF32)
+            return
+        else:
+            print(f"device {self.device} is not a gpu, not enabling tf32 mode")
+            return
 
     def get_rng_state_all(self):
-        return torch.xpu.get_rng_state_all()
+        return ipex.xpu.get_rng_state_all()
 
     def set_rng_state(self, state):
-        torch.xpu.set_rng_state_all(state)
+        ipex.xpu.set_rng_state_all(state)
 
     def manual_seed(self, seed):
         torch.manual_seed(seed)
-        torch.xpu.manual_seed_all(seed)
+        ipex.xpu.manual_seed_all(seed)
         numpy.random.seed(seed)
+
+    @classmethod
+    @property
+    def amp(self):
+        return ipex.xpu.amp
+
+    ## Expected by the accelerators module
+    def autocast(self, *args, **kwargs):
+        return torch.autocast("xpu", *args, **kwargs)
+
+    def without_autocast(self, disable: bool):
+        return (
+            torch.autocast("xpu", enabled=False)
+            if ipex.xpu.is_autocast_xpu_enabled() and not disable
+            else contextlib.nullcontext()
+        )
+
+    def optimize(self, model, dtype: torch.dtype):
+        return ipex.optimize(model, dtype)
 
     def randn(self, shape, device=torch.device("cpu")):
         return torch.randn(shape, device=device).to(self.device)
 
+    # Remaining methods are called by exported methods above or other modules
     def randn_like(self, x, device=None):
         if device is None:
             device = self.device
@@ -98,6 +117,50 @@ class OneApiAccelerator(BaseAccelerator):
     def get_einsum_op_mem(self):
         return self.get_free_memory() / 3 / (1 << 20)
 
-    @property
-    def amp(self):
-        return torch.xpu.amp
+
+# xpu workaround for https://github.com/pytorch/pytorch/issues/89784
+def cumsum_fix(input, cumsum_func, *args, **kwargs):
+    if input.device.type == "xpu":
+        output_dtype = kwargs.get("dtype", input.dtype)
+        if output_dtype == torch.int64:
+            return cumsum_func(input.cpu(), *args, **kwargs).to(input.device)
+        elif (
+            cumsum_needs_bool_fix
+            and output_dtype == torch.bool
+            or cumsum_needs_int_fix
+            and (output_dtype == torch.int8 or output_dtype == torch.int16)
+        ):
+            return cumsum_func(input.to(torch.int32), *args, **kwargs).to(torch.int64)
+    return cumsum_func(input, *args, **kwargs)
+
+
+if ipex.xpu.is_available():
+    # fix for randn in torchsde
+    CondFunc(
+        "torchsde._brownian.brownian_interval._randn",
+        lambda _, size, dtype, device, seed: torch.randn(
+            size,
+            dtype=dtype,
+            device=torch.device("cpu"),
+            generator=torch.Generator(torch.device("cpu")).manual_seed(int(seed)),
+        ).to(device),
+        lambda _, size, dtype, device, seed: device.type == "xpu",
+    )
+
+    if version.parse(torch.__version__) > version.parse("1.13.1"):
+        cumsum_needs_int_fix = (
+            not torch.Tensor([1, 2])
+            .to(torch.device("xpu"))
+            .equal(torch.ShortTensor([1, 1]).to(torch.device("xpu")).cumsum(0))
+        )
+        cumsum_needs_bool_fix = (
+            not torch.BoolTensor([True, True])
+            .to(device=torch.device("xpu"), dtype=torch.int64)
+            .equal(torch.BoolTensor([True, False]).to(torch.device("xpu")).cumsum(0))
+        )
+        cumsum_fix_func = lambda orig_func, input, *args, **kwargs: cumsum_fix(
+            input, orig_func, *args, **kwargs
+        )
+        CondFunc("torch.cumsum", cumsum_fix_func, None)
+        CondFunc("torch.Tensor.cumsum", cumsum_fix_func, None)
+        CondFunc("torch.narrow", lambda orig_func, *args, **kwargs: orig_func(*args, **kwargs).clone(), None)
